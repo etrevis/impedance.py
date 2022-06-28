@@ -111,3 +111,14 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# test data
+autolab_test.csv
+biologic_test.csv
+chinstruments_test.csv
+gamry_test.csv
+None_test.csv
+parstat_test.csv
+powersuite_test.csv
+versastudio_test.csv
+zplot_test.csv

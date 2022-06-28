@@ -111,8 +111,7 @@ def circuit_fit(frequencies, impedances, circuit, initial_guess, constants={},
         Only applicable when global_opt = False
 
     weight_proportionally : bool, optional
-        Uses the modulus of each data (|Z|) as the weighting factor.
-        Standard weighting scheme when experimental variances are unavailable.
+        Uses the Re(Z), Im(Z) components as the weighting factor.
         Only applicable when global_opt = False
 
     global_opt : bool, optional
