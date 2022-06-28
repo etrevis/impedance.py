@@ -112,7 +112,7 @@ def circuit_fit(frequencies, impedances, circuit, initial_guess, constants={},
 
     weight_proportionally : bool, optional
         Uses the Re(Z), Im(Z) components as the weighting factor.
-        Only applicable when global_opt = False
+        Only applicable when global_opt = False and weight_by_modulus = False
 
     global_opt : bool, optional
         If global optimization should be used (uses the basinhopping
@@ -152,7 +152,7 @@ def circuit_fit(frequencies, impedances, circuit, initial_guess, constants={},
         if weight_by_modulus:
             abs_Z = np.abs(Z)
             kwargs['sigma'] = np.hstack([abs_Z, abs_Z])
-        elif weight_proportionally:
+        elif weight_proportionally and not weight_by_modulus:
             Re_Z = np.real(Z)
             Im_Z = np.imag(Z)
             kwargs['sigma'] = np.hstack([Re_Z, Im_Z])
