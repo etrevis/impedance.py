@@ -356,6 +356,54 @@ def T(p, f):
     Z = A/(beta*np.tanh(beta)) + B/(beta*np.array(sinh))
     return Z
 
+@element_metadata(num_params=6, units=['Ohm-m^2', 'Ohm-m^2', '', 'sec', 'sec', 'sec'])
+def Tf(p, f):
+    """ A macrohomogeneous porous electrode model from Paasch et al. [1]
+    with full complexity. Relaxation times of the diffusive processes in
+    the liquid and solid phase are added.
+
+    Notes
+    -----
+    .. math::
+
+        Z = A\\frac{\\coth{\\beta}}{\\beta} + B\\frac{1}{\\beta\\sinh{\\beta}}
+
+    where
+
+    .. math::
+
+        A = d\\frac{\\rho_1^2 + \\rho_2^2}{\\rho_1 + \\rho_2} \\quad
+        B = d\\frac{2 \\rho_1 \\rho_2}{\\rho_1 + \\rho_2}
+
+    and
+
+    .. math::
+        \\beta = (a + j \\omega b)^{1/2} \\quad
+        a = \\frac{k y(\\omega)}{K} d^2 \\quad b = \\frac{d^2}{K}
+        y(\\omega) = (1 + \\sqrt{\\frac{1}{j \\omega \\tau_{liq.}}} \\coth \\sqrt{j \\omega \\tau_{sol.}})^-1
+
+
+    [1] G. Paasch, K. Micka, and P. Gersdorf,
+    Electrochimica Acta, 38, 2653–2662 (1993)
+    `doi: 10.1016/0013-4686(93)85083-B
+    <https://doi.org/10.1016/0013-4686(93)85083-B>`_.
+    """
+
+    omega = 2*np.pi*np.array(f)
+    A, B, a, b, t_l, t_s = p[0], p[1], p[2], p[3], p[4], p[5]
+    a_ = a / (1 + np.sqrt(1/(1j*omega*t_l))/np.tanh(np.sqrt(1j*omega*t_s)))
+    beta = np.sqrt(a_ + 1j*omega*b)
+
+    sinh = []
+    for x in beta:
+        if x < 100:
+            sinh.append(np.sinh(x))
+        else:
+            sinh.append(1e10)
+
+    Z = A/(beta*np.tanh(beta)) + B/(beta*np.array(sinh))
+    return Z
+
 
 circuit_elements = {key: eval(key) for key in set(globals())-set(initial_state)
                     if key not in non_element_functions}
