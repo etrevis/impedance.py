@@ -1,6 +1,7 @@
 *.ipynb_checkpoints
 *.DS_Store
 *.json
+dev.ipynb
 
 impedance/__pycache__/
 impedance/tests/__pycache__/
