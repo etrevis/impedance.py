@@ -156,7 +156,7 @@ def circuit_fit(frequencies, impedances, circuit, initial_guess, constants={},
         elif weight_proportionally:
             Re_Z = np.real(Z)
             Im_Z = np.imag(Z)
-            kwargs['sigma'] = np.hstack([Re_Z, Im_Z])
+            kwargs['sigma'] = np.hstack([Z.real, Z.imag])
 
         popt, pcov = curve_fit(wrapCircuit(circuit, constants), f,
                                np.hstack([Z.real, Z.imag]),
