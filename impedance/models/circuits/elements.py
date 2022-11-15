@@ -288,6 +288,22 @@ def K(p, f):
     Z = R/(1 + 1j*omega*tau_k)
     return Z
 
+@element_metadata(num_params=3, units=['Ohm', 'sec', ''])
+def Zarc(p, f):
+    """ An RC element for use in lin-KK model
+
+    Notes
+    -----
+    .. math::
+
+        Z = \\frac{R}{1 + (j \\omega)^\\alpha \\tau_k}
+
+    """
+    omega = 2*np.pi*np.array(f)
+    R, tau_k, alpha = p[0], p[1], p[2]
+    Z = R/(1 + (tau_k*(1j*omega)**alpha))
+    return Z
+
 
 @element_metadata(num_params=3, units=['Ohm', 'F sec^(gamma - 1)', ''])
 def TLMQ(p, f):
