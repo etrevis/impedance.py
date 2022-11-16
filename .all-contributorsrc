@@ -183,6 +183,16 @@
       ]
     },
     {
+      "login": "markbouman",
+      "name": "Mark Bouman",
+      "avatar_url": "https://avatars.githubusercontent.com/u/103944120?v=4",
+      "profile": "https://github.com/markbouman",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    },
+    {
       "login": "etrevis",
       "name": "etrevis",
       "avatar_url": "https://avatars.githubusercontent.com/u/85888904?v=4",
@@ -191,12 +201,13 @@
         "bug",
         "code"
       ]
-    }
+    },
   ],
   "contributorsPerLine": 7,
   "projectName": "impedance.py",
   "projectOwner": "ECSHackWeek",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitConvention": "angular"
 }
