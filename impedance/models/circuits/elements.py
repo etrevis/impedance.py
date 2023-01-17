@@ -288,22 +288,6 @@ def K(p, f):
     Z = R/(1 + 1j*omega*tau_k)
     return Z
 
-@element_metadata(num_params=3, units=['Ohm', 'sec', ''])
-def Zarc(p, f):
-    """ An RC element for use in lin-KK model
-
-    Notes
-    -----
-    .. math::
-
-        Z = \\frac{R}{1 + (j \\omega)^\\alpha \\tau_k}
-
-    """
-    omega = 2*np.pi*np.array(f)
-    R, tau_k, alpha = p[0], p[1], p[2]
-    Z = R/(1 + (tau_k*(1j*omega)**alpha))
-    return Z
-
 
 @element_metadata(num_params=3, units=['Ohm', 'F sec^(gamma - 1)', ''])
 def TLMQ(p, f):
@@ -372,11 +356,13 @@ def T(p, f):
     Z = A/(beta*np.tanh(beta)) + B/(beta*np.array(sinh))
     return Z
 
-@element_metadata(num_params=6, units=['Ohm-m^2', 'Ohm-m^2', '', 'sec', 'sec', 'sec'])
+@element_metadata(num_params=7, units=['Ohm-m^2', 'Ohm-m^2', '', 'sec', 'sec', 'sec',''])
 def Tf(p, f):
     """ A macrohomogeneous porous electrode model from Paasch et al. [1]
     with full complexity. Relaxation times of the diffusive processes in
-    the liquid and solid phase are added.
+    the liquid and/or solid phase are added. Reflective boundary contidions
+    and spherical geomtry are assumed. CPE-like frequency disphersion is
+    included withing the gamma parameter.
 
     Notes
     -----
@@ -394,9 +380,10 @@ def Tf(p, f):
     and
 
     .. math::
-        \\beta = (a + j \\omega b)^{1/2} \\quad
+        \\beta = [a + b (j \\omega)^\\gamma)]^{1/2} \\quad
         a = \\frac{k y(\\omega)}{K} d^2 \\quad b = \\frac{d^2}{K}
-        y(\\omega) = (1 + \\sqrt{\\frac{1}{j \\omega \\tau_{liq.}}} \\coth \\sqrt{j \\omega \\tau_{sol.}})^-1
+        y(\\omega) = (1 + \\sqrt{\\frac{1}{\\tau_{liq.} (j \\omega)^\\gamma)}}
+        \\coth \\sqrt{\\tau_{sol.} (j \\omega)^\\gamma)})^-1
 
 
     [1] G. Paasch, K. Micka, and P. Gersdorf,
@@ -406,9 +393,11 @@ def Tf(p, f):
     """
 
     omega = 2*np.pi*np.array(f)
-    A, B, a, b, t_l, t_s = p[0], p[1], p[2], p[3], p[4], p[5]
-    a_ = a / (1 + np.sqrt(1/(1j*omega*t_l))/np.tanh(np.sqrt(1j*omega*t_s)))
-    beta = np.sqrt(a_ + 1j*omega*b)
+    A, B, a, b, t_l, t_s, gamma = p[0], p[1], p[2], p[3], p[4], p[5], p[6]
+    liquid_ph_admittance = np.sqrt(1/(t_l*(1j*omega)**gamma))
+    solid_ph_admittance = np.tanh(np.sqrt(t_s*(1j*omega)**gamma))
+    a_ = a / (1 + solid_ph_admittance/(np.sqrt(t_s*(1j*omega)**gamma)-solid_ph_admittance ))
+    beta = np.sqrt(a_ + b*(1j*omega)**gamma)
 
     sinh = []
     for x in beta:
@@ -418,6 +407,24 @@ def Tf(p, f):
             sinh.append(1e10)
 
     Z = A/(beta*np.tanh(beta)) + B/(beta*np.array(sinh))
+    return Z
+
+
+
+@element_metadata(num_params=3, units=['Ohm', 'sec', ''])
+def Zarc(p, f):
+    """ An RC element for use in lin-KK model
+
+    Notes
+    -----
+    .. math::
+
+        Z = \\frac{R}{1 + (j \\omega)^\\alpha \\tau_k}
+
+    """
+    omega = 2*np.pi*np.array(f)
+    R, tau_k, alpha = p[0], p[1], p[2]
+    Z = R/(1 + (tau_k*(1j*omega)**alpha))
     return Z
 
 
