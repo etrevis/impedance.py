@@ -380,7 +380,9 @@ def T(p, f):
     Z = A / (beta * np.tanh(beta)) + B / (beta * np.array(sinh))
     return Z
 
-@element_metadata(num_params=7, units=['Ohm-m^2', 'Ohm-m^2', '', 'sec', 'sec', 'sec',''])
+
+@element(num_params=7, 
+        units=['Ohm-m^2', 'Ohm-m^2', '', 'sec', 'sec', 'sec', ''])
 def Tf(p, f):
     """ A macrohomogeneous porous electrode model from Paasch et al. [1]
     with full complexity. Relaxation times of the diffusive processes in
@@ -434,8 +436,7 @@ def Tf(p, f):
     return Z
 
 
-
-@element_metadata(num_params=3, units=['Ohm', 'sec', ''])
+@element(num_params=3, units=['Ohm', 'sec', ''])
 def Zarc(p, f):
     """ An RC element for use in lin-KK model
 
