@@ -72,7 +72,7 @@ def test_Randles():
 
     # compare with known impedance predictions
     assert np.isclose(randles.predict(np.array([10.0])),
-                      np.complex(0.0251618, -0.00601304))
+                      complex(0.0251618, -0.00601304))
 
     # check altair plotting with a fit circuit
     chart = randles.plot(f_data=f, Z_data=Z)
@@ -185,3 +185,8 @@ def test_CustomCircuit():
     # incorrect circuit element in circuit
     with pytest.raises(ValueError):
         custom_circuit = CustomCircuit('R0-NotAnElement', initial_guess=[1, 2])
+
+    # space in circuit string
+    circuit = circuit = 'R0-p(R1, C1)'
+    initial_guess = [1, 2, 3]
+    circuit = CustomCircuit(circuit, initial_guess=initial_guess)

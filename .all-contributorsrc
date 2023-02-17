@@ -193,15 +193,32 @@
       ]
     },
     {
-      "login": "etrevis",
-      "name": "etrevis",
-      "avatar_url": "https://avatars.githubusercontent.com/u/85888904?v=4",
-      "profile": "https://github.com/etrevis",
+      "login": "oslopanda",
+      "name": "oslopanda",
+      "avatar_url": "https://avatars.githubusercontent.com/u/33810430?v=4",
+      "profile": "https://github.com/oslopanda",
       "contributions": [
-        "bug",
-        "code"
+        "bug"
       ]
     },
+    {
+      "login": "pililac",
+      "name": "pililac",
+      "avatar_url": "https://avatars.githubusercontent.com/u/60116646?v=4",
+      "profile": "https://github.com/pililac",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "kevinsmia1939",
+      "name": "Kavin Teenakul",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11407922?v=4",
+      "profile": "https://github.com/kevinsmia1939",
+      "contributions": [
+        "code"
+      ]
+    }
   ],
   "contributorsPerLine": 7,
   "projectName": "impedance.py",
