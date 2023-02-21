@@ -154,8 +154,6 @@ def circuit_fit(frequencies, impedances, circuit, initial_guess, constants={},
             abs_Z = np.abs(Z)
             kwargs['sigma'] = np.hstack([abs_Z, abs_Z])
         elif weight_proportionally:
-            Re_Z = np.real(Z)
-            Im_Z = np.imag(Z)
             kwargs['sigma'] = np.hstack([Z.real, Z.imag])
 
         popt, pcov = curve_fit(wrapCircuit(circuit, constants), f,
@@ -331,8 +329,7 @@ def buildCircuit(circuit, frequencies, *parameters,
     elif parallel is not None and len(parallel) > 1:
         eval_string += "p(["
         split = parallel
-    elif series == parallel:
-        eval_string += "(["
+    elif series == parallel:  # only single element
         split = series
 
     for i, elem in enumerate(split):
@@ -364,7 +361,8 @@ def buildCircuit(circuit, frequencies, *parameters,
             eval_string += new
 
         if i == len(split) - 1:
-            eval_string += '])'
+            if len(split) > 1:  # do not add closing brackets if single element
+                eval_string += '])'
         else:
             eval_string += ','
 
