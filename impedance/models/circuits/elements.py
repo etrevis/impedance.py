@@ -336,7 +336,7 @@ def TLMQ(p, f):
     return Z
 
 
-@element(num_params=4, units=["Ohm-m^2", "Ohm-m^2", "", "sec"])
+@element(num_params=4, units=["Ohm", "Ohm", "Hz", "Hz"])
 def T(p, f):
     """A macrohomogeneous porous electrode model from Paasch et al. [1]
 
@@ -344,20 +344,17 @@ def T(p, f):
     -----
     .. math::
 
-        Z = A\\frac{\\coth{\\beta}}{\\beta} + B\\frac{1}{\\beta\\sinh{\\beta}}
-
+        Z = \\left[ \\frac{\\rho_el^2 + \\rho_ion^2}{\\rho_el \\rho_ion}
+        \\cdot \\frac{\\coth{\\beta}}{\\beta}
+        + \\frac{2\\rho_el\\rho_ion}{\\rho_el + \\rho_ion}
+        \\cdot \\frac{1}{\\beta\\sinh{\\beta}}
+        + \\frac{\\rho_el\\rho_ion}{\\rho_el + \\rho_ion} \\right]
     where
 
     .. math::
 
-        A = d\\frac{\\rho_1^2 + \\rho_2^2}{\\rho_1 + \\rho_2} \\quad
-        B = d\\frac{2 \\rho_1 \\rho_2}{\\rho_1 + \\rho_2}
+        \\beta = \\left(\\frac{k+i\\omega}{\\omega_1}\\right)^\\frac{1}{2}
 
-    and
-
-    .. math::
-        \\beta = (a + j \\omega b)^{1/2} \\quad
-        a = \\frac{k d^2}{K} \\quad b = \\frac{d^2}{K}
 
 
     [1] G. Paasch, K. Micka, and P. Gersdorf,
@@ -367,17 +364,25 @@ def T(p, f):
     """
 
     omega = 2 * np.pi * np.array(f)
-    A, B, a, b = p[0], p[1], p[2], p[3]
-    beta = (a + 1j * omega * b) ** (1 / 2)
+    R_el, R_ion, k, K = p[0], p[1], p[2], p[3]
+    beta = (k + 1j * omega / K) ** (1 / 2)
 
-    sinh = []
+    sinh, tanh = [], []
     for x in beta:
-        if x < 100:
+        # this section catches numeric overflows,
+        # beta will be dtype np.complex128 by default,
+        # so real and imag components are each float64
+
+        if x.real < 100:
             sinh.append(np.sinh(x))
+            tanh.append(np.tanh(x))
         else:
             sinh.append(1e10)
+            tanh.append(1 + 0j)
 
-    Z = A / (beta * np.tanh(beta)) + B / (beta * np.array(sinh))
+    A = (R_el**2 + R_ion**2) / (R_el + R_ion)
+    B = 2 * (R_el * R_ion) / (R_el**2 + R_ion**2)
+    Z = A / (beta * np.array(tanh)) + B / (beta * np.array(sinh)) + B / 2
     return Z
 
 
