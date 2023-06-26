@@ -438,18 +438,20 @@ def Tf(p, f):
 
 @element(num_params=3, units=['Ohm', 'sec', ''])
 def Zarc(p, f):
-    """ An RC element for use in lin-KK model
+    """ An RQ element rewritted with resistance and
+    and time constant as paramenters. Equivalent to a
+    Cole-Cole relaxation in dielectrics.
 
     Notes
     -----
     .. math::
 
-        Z = \\frac{R}{1 + (j \\omega)^\\alpha \\tau_k}
+        Z = \\frac{R}{1 + (j \\omega \\tau_k)^\\gamma }
 
     """
     omega = 2*np.pi*np.array(f)
-    R, tau_k, alpha = p[0], p[1], p[2]
-    Z = R/(1 + (tau_k*(1j*omega)**alpha))
+    R, tau_k, gamma = p[0], p[1], p[2]
+    Z = R/(1 + ((1j*omega*tau_k)**gamma))
     return Z
 
 
