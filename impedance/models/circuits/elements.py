@@ -386,6 +386,59 @@ def T(p, f):
     return Z
 
 
+@element(num_params=5, units=["Ohm", "Ohm", "Hz", "Hz", ""])
+def Tf(p, f):
+    """A macrohomogeneous porous electrode model from Paasch et al. [1]
+    Extended to include frequency dispersion due to inhmogeneus 
+    capacitative process and reflection contitions after the charge
+    transfer.
+
+    Notes
+    -----
+    .. math::
+
+        Z = \\left[ \\frac{\\rho_el^2 + \\rho_ion^2}{\\rho_el \\rho_ion}
+        \\cdot \\frac{\\coth{\\beta}}{\\beta}
+        + \\frac{2\\rho_el\\rho_ion}{\\rho_el + \\rho_ion}
+        \\cdot \\frac{1}{\\beta\\sinh{\\beta}}
+        + \\frac{\\rho_el\\rho_ion}{\\rho_el + \\rho_ion} \\right]
+    where
+
+    .. math::
+
+        \\beta = \\left(\\frac{k+i\\omega}{\\omega_1}\\right)^\\frac{1}{2}
+
+
+
+    [1] G. Paasch, K. Micka, and P. Gersdorf,
+    Electrochimica Acta, 38, 2653–2662 (1993)
+    `doi: 10.1016/0013-4686(93)85083-B
+    <https://doi.org/10.1016/0013-4686(93)85083-B>`_.
+    """
+
+    omega = 2 * np.pi * np.array(f)
+    R_el, R_ion, k, K, gamma  = p[0], p[1], p[2], p[3], p[4]
+    # reflective_admittance = 1/np.tanh(np.sqrt(tau_r*(1j*omega)))
+    beta = (((k + 1j * omega) / K)**gamma) ** (1 / 2)
+
+    sinh, tanh = [], []
+    for x in beta:
+        # this section catches numeric overflows,
+        # beta will be dtype np.complex128 by default,
+        # so real and imag components are each float64
+
+        if x.real < 100:
+            sinh.append(np.sinh(x))
+            tanh.append(np.tanh(x))
+        else:
+            sinh.append(1e10)
+            tanh.append(1 + 0j)
+
+    A = (R_el**2 + R_ion**2) / (R_el * R_ion)
+    B = 2 * (R_el * R_ion) / (R_el**2 + R_ion**2)
+    Z = A / (beta * np.array(tanh)) + B / (beta * np.array(sinh)) + B / 2
+    return Z
+
 def get_element_from_name(name):
     excluded_chars = "0123456789_"
     return "".join(char for char in name if char not in excluded_chars)
