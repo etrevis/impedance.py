@@ -74,7 +74,7 @@ def test_each_element():
             (6.332569967499333e-08 - 7.957742115295703e-05j),
         ],
     }
-    input_vals = [0.1, 0.2, 0.3, 0.4, 0.5]
+    input_vals = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]
     for key, f in circuit_elements.items():
         # don't test the outputs of series and parallel functions
         if key not in ["s", "p"]:

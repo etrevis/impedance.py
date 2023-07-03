@@ -386,12 +386,12 @@ def T(p, f):
     return Z
 
 
-@element(num_params=5, units=["Ohm", "Ohm", "Hz", "Hz", ""])
+@element(num_params=7, units=["Ohm", "Ohm", "Hz", "Hz", "Hz", "Hz", ""])
 def Tf(p, f):
     """A macrohomogeneous porous electrode model from Paasch et al. [1]
     Extended to include frequency dispersion due to inhmogeneus 
-    capacitative process and reflection contitions after the charge
-    transfer.
+    capacitative process (gamma) and reflective contitions after the charge
+    transfer (:math:`\\Omega_2`, :math:`\\Omega_3`).
 
     Notes
     -----
@@ -417,9 +417,10 @@ def Tf(p, f):
     """
 
     omega = 2 * np.pi * np.array(f)
-    R_el, R_ion, k, K, gamma  = p[0], p[1], p[2], p[3], p[4]
+    R_el, R_ion, k, K, omega_2, omega_3, gamma  = p[0], p[1], p[2], p[3], p[4], p[5], p[6]
     # reflective_admittance = 1/np.tanh(np.sqrt(tau_r*(1j*omega)))
-    beta = (((k + (1j * omega)**gamma) / K)) ** (1 / 2)
+    restricted_admittance = k/(1 + np.sqrt(omega_2/(1j * omega))/np.tanh(np.sqrt((1j * omega)/omega_3)))
+    beta = (((restricted_admittance  + (1j * omega)**gamma) / K)) ** (1 / 2)
 
     sinh, tanh = [], []
     for x in beta:
