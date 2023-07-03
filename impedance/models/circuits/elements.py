@@ -419,7 +419,7 @@ def Tf(p, f):
     omega = 2 * np.pi * np.array(f)
     R_el, R_ion, k, K, gamma  = p[0], p[1], p[2], p[3], p[4]
     # reflective_admittance = 1/np.tanh(np.sqrt(tau_r*(1j*omega)))
-    beta = (((k + 1j * omega) / K)**gamma) ** (1 / 2)
+    beta = (((k + (1j * omega)**gamma) / K)) ** (1 / 2)
 
     sinh, tanh = [], []
     for x in beta:
