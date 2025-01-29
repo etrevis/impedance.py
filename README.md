@@ -2,7 +2,7 @@
 
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/impedance?style=flat-square)  [![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors)
 
-[![Build Status](https://travis-ci.org/ECSHackWeek/impedance.py.svg?branch=master&kill_cache=1)](https://travis-ci.org/ECSHackWeek/impedance.py)  [![Documentation Status](https://readthedocs.org/projects/impedancepy/badge/?version=latest&kill_cache=1)](https://impedancepy.readthedocs.io/en/latest/?badge=latest) [![Coverage Status](https://coveralls.io/repos/github/ECSHackWeek/impedance.py/badge.svg?branch=master&kill_cache=1)](https://coveralls.io/github/ECSHackWeek/impedance.py?branch=master)
+[![Build Status](https://github.com/ECSHackWeek/impedance.py/actions/workflows/ci.yml/badge.svg)](https://github.com/ECSHackWeek/impedance.py/actions)  [![Documentation Status](https://readthedocs.org/projects/impedancepy/badge/?version=latest&kill_cache=1)](https://impedancepy.readthedocs.io/en/latest/?badge=latest) [![Coverage Status](https://coveralls.io/repos/github/ECSHackWeek/impedance.py/badge.svg?branch=master&kill_cache=1)](https://coveralls.io/github/ECSHackWeek/impedance.py?branch=master)
 
 impedance.py
 ------------
@@ -31,9 +31,10 @@ impedance.py requires:
 
 -   Python (>=3.7)
 -   SciPy (>=1.0)
--   NumPy (>=1.14)
+-   NumPy (>=1.22.4)
 -   Matplotlib (>=3.0)
 -   Altair (>=3.0)
+-   Pandas
 
 Several example notebooks are provided in the `docs/source/examples/` directory. Opening these will require Jupyter notebook or Jupyter lab.
 
@@ -101,6 +102,7 @@ This project started at the [2018 Electrochemical Society (ECS) Hack Week in Sea
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/kevinsmia1939"><img src="https://avatars.githubusercontent.com/u/11407922?v=4?s=100" width="100px;" alt="Kavin Teenakul"/><br /><sub><b>Kavin Teenakul</b></sub></a><br /><a href="https://github.com/ECSHackWeek/impedance.py/commits?author=kevinsmia1939" title="Code">💻</a> <a href="https://github.com/ECSHackWeek/impedance.py/commits?author=kevinsmia1939" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/etrevis"><img src="https://avatars.githubusercontent.com/u/16451399?v=4?s=100" width="100px;" alt="Enrico"/><br /><sub><b>Enrico</b></sub></a><br /><a href="https://github.com/ECSHackWeek/impedance.py/commits?author=etrevis" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://ma-sadeghi.github.io"><img src="https://avatars.githubusercontent.com/u/14086031?v=4?s=100" width="100px;" alt="Amin Sadeghi"/><br /><sub><b>Amin Sadeghi</b></sub></a><br /><a href="https://github.com/ECSHackWeek/impedance.py/commits?author=ma-sadeghi" title="Code">💻</a> <a href="https://github.com/ECSHackWeek/impedance.py/issues?q=author%3Ama-sadeghi" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
