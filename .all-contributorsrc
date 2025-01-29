@@ -219,6 +219,25 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "etrevis",
+      "name": "Enrico",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16451399?v=4",
+      "profile": "https://github.com/etrevis",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "ma-sadeghi",
+      "name": "Amin Sadeghi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14086031?v=4",
+      "profile": "https://ma-sadeghi.github.io",
+      "contributions": [
+        "code",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -227,5 +246,6 @@
   "repoType": "github",
   "repoHost": "https://github.com",
   "skipCi": true,
-  "commitConvention": "angular"
+  "commitConvention": "angular",
+  "commitType": "docs"
 }

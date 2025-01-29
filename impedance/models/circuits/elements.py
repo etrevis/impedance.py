@@ -45,6 +45,12 @@ def element(num_params, units, overwrite=False):
             )
         else:
             circuit_elements[func.__name__] = wrapper
+        # Adding numpy to circuit_elements for proper evaluation with
+        # numpy>=2.0.0 because the scalar representation was changed.
+        # "Scalars are now printed as np.float64(3.0) rather than just 3.0."
+        # https://numpy.org/doc/2.0/release/2.0.0-notes.html
+        # #representation-of-numpy-scalars-changed
+        circuit_elements["np"] = np
 
         return wrapper
 
@@ -310,6 +316,25 @@ def K(p, f):
     omega = 2 * np.pi * np.array(f)
     R, tau_k = p[0], p[1]
     Z = R / (1 + 1j * omega * tau_k)
+    return Z
+
+
+@element(num_params=3, units=['Ohm', 'sec', ''])
+def Zarc(p, f):
+    """ An RQ element rewritten with resistance and
+    and time constant as paramenters. Equivalent to a
+    Cole-Cole relaxation in dielectrics.
+
+    Notes
+    -----
+    .. math::
+
+        Z = \\frac{R}{1 + (j \\omega \\tau_k)^\\gamma }
+
+    """
+    omega = 2*np.pi*np.array(f)
+    R, tau_k, gamma = p[0], p[1], p[2]
+    Z = R/(1 + ((1j*omega*tau_k)**gamma))
     return Z
 
 
